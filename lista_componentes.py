@@ -26,7 +26,7 @@ class Lista_componenetes():
         componente_bus = self.inicio
         while componente_bus is not None:
             if componente == componente_bus.componente:
-                return componente
+                return componente_bus
             componente_bus = componente_bus.siguiente
         return None
         

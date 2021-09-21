@@ -35,11 +35,13 @@ def cargar_archivo(ruta, lineas_ensamblaje, lista_productos):
             for productos in listado_productos.iter('Producto'):
                 nombre_producto = " "
                 for nombre in productos.iter('nombre'):
-                    nombre_producto = nombre.text
+                    nombre_producto = str(nombre.text)
+        
                     lista_productos.ingresar_producto(nombre_producto)
                 for elaboracio in productos.iter('elaboracion'):
                     producto = lista_productos.get_producto(nombre_producto)
                     comandos = elaboracio.text
+                    comandos +=  " "
                     comando = ""
                     for i in comandos:
                         if re.search('\d', i):

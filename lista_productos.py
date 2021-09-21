@@ -11,15 +11,17 @@ class Lista_productos():
 
         if self.principio is None:
             self.principio = nuevo_producto
-            self.final = nuevo_producto
+           
         else:
-            nuevo_producto.siguiente = self.final
+            producto_temporal = self.principio
+
+            while producto_temporal.siguiente is not None:
+                producto_temporal = producto_temporal.siguiente
+            producto_temporal.siguiente = nuevo_producto
+
             self.final = nuevo_producto
-            nodo = self.principio
-            while nodo.anterior is not None:
-                nodo = nodo.anterior
+            nuevo_producto.anterior = producto_temporal
             
-            nodo.anterior = nuevo_producto
 
     def get_producto(self, nombre_producto):
         producto_temporal = self.principio
