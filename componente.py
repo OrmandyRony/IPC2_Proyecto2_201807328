@@ -1,6 +1,5 @@
 class Componente():
-    def __init__(self, componente) -> None:
-        self.posicion = componente
+    def __init__(self, posicion) -> None:
+        self.posicion = posicion
         self.siguiente = None
         self.anterior = None
-        self.tiempo = 1

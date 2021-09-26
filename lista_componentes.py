@@ -6,8 +6,8 @@ class Lista_componenetes():
         self.fin = None
         self.tamano = 0
 
-    def insertar(self, componente):
-        nuevo_componente = Componente(componente)
+    def insertar(self, posicion):
+        nuevo_componente = Componente(posicion)
         self.tamano += 1
 
         if self.inicio is None:
@@ -25,7 +25,7 @@ class Lista_componenetes():
     def get_componente(self, componente):
         componente_bus = self.inicio
         while componente_bus is not None:
-            if componente == componente_bus.componente:
+            if componente == componente_bus.posicion:
                 return componente_bus
             componente_bus = componente_bus.siguiente
         return None

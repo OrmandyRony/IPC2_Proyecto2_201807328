@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Maquina>
-    <CantidadLineasProduccion>
-        2
-    </CantidadLineasProduccion>
-    <LineaProduccion>
-        <Numero>
-            1
-        </Numero>
-        <CantidadComponentes>
-            4
-        </CantidadComponentes>
-        <TiempoEnsamblaje>
-            1
-        </TiempoEnsamblaje>
-    </LineaProduccion>
-    <LineaProduccion>
-        <Numero>
-            2
-        </Numero>
-        <CantidadComponentes>
-            4
-        </CantidadComponentes>
-        <TiempoEnsamblaje>
-            1
-        </TiempoEnsamblaje>
-    </LineaProduccion>
-    <ListadoProductos>
-        <Producto>
-            <nombre>
-            iWatch
-            </nombre>
-            <elaboracion>
-                L1pC2 L2pC1 L2pC2 L1pC4
-            </elaboracion>
-        </Producto>
-    </ListadoProductos>
+<CantidadLineasProduccion>
+2
+</CantidadLineasProduccion>
+<ListadoLineasProduccion>
+<LineaProduccion>
+<Numero>
+1
+</Numero>
+<CantidadComponentes>
+4
+</CantidadComponentes>
+<TiempoEnsamblaje>
+1
+</TiempoEnsamblaje>
+</LineaProduccion>
+<LineaProduccion>
+<Numero>
+2
+</Numero>
+<CantidadComponentes>
+4
+</CantidadComponentes>
+<TiempoEnsamblaje>
+1
+</TiempoEnsamblaje>
+</LineaProduccion>
+</ListadoLineasProduccion>
+<ListadoProductos>
+<Producto>
+<nombre>
+iWatch
+</nombre>
+<elaboracion>
+L1pC2 L2pC1 L2pC2 L1pC4
+</elaboracion>
+</Producto>
+</ListadoProductos>
 </Maquina>

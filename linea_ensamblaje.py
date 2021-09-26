@@ -6,5 +6,10 @@ class Linea_ensamblaje():
         self.tiempo_ensamblaje = tiempo_ensamblaje
 
         self.lista_componentes = Lista_componenetes()
+        self.posicion_dinamica = 0
         self.siguiente = None
         self.anterior = None
+
+
+    def mover_posicion(self, posicion_dinamica):
+        self.posicion_dinamica = posicion_dinamica

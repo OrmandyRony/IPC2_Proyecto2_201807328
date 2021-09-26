@@ -6,8 +6,8 @@ class Elaboracion():
         self.fin = None
         self.tamano = 0
 
-    def insertar_comando(self, comando):
-        nuevo_comando = Comando(comando)
+    def insertar_comando(self, comando, linea, posicion):
+        nuevo_comando = Comando(comando, linea, posicion)
         self.tamano += 1
 
         if self.inicio is None:

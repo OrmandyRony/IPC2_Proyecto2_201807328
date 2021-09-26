@@ -42,7 +42,11 @@ def cargar_archivo(ruta, lineas_ensamblaje, lista_productos):
                     comandos = elaboracio.text
                     comandos +=  " "
                     comando = ""
+                    linea = ""
+                    posicion = ""
+
                     for i in comandos:
+    
                         if re.search('\d', i):
                             comando += i
                         elif i == "L":
@@ -52,8 +56,25 @@ def cargar_archivo(ruta, lineas_ensamblaje, lista_productos):
                         elif i == "p":
                             comando += i
                         elif i == " ":
-                            producto.elaboracion.insertar_comando(comando)
                             comando = ""
+
+                            for coman in comando:
+                                if re.search('\d', coman):
+                                    linea += coman
+                                elif coman == "p":
+                                    break
+                            
+                            for coman in comando:
+                                if coman == "C":
+                                    bandera = True
+                                if bandera:
+                                    if re.search('\d', coman):
+                                        posicion += coman
+                        
+                        producto.elaboracion.insertar_comando(comando, int(linea), int(posicion))
+                                    
+                            
+                        
 
 def cargar_archivo_2(ruta, maquina_intelligence):
     tree = ET.parse(ruta)
@@ -78,7 +99,7 @@ def cargar_archivo_2(ruta, maquina_intelligence):
                 for cantidad_componentes in linea_produccion.iter('CantidadComponentes'):
                     linea = maquina_intelligence.lineas_ensamblaje.get_linea(id_numero)
                     numero_componentes = int(cantidad_componentes.text)
-                    for i in range(1, numero_componentes + 1):
+                    for i in range(0, numero_componentes + 1):
                         linea.lista_componentes.insertar(i)
 
 
@@ -95,7 +116,11 @@ def cargar_archivo_2(ruta, maquina_intelligence):
                     comandos = elaboracio.text
                     comandos +=  " "
                     comando = ""
+                    linea = ""
+                    posicion = ""
+
                     for i in comandos:
+    
                         if re.search('\d', i):
                             comando += i
                         elif i == "L":
@@ -104,9 +129,29 @@ def cargar_archivo_2(ruta, maquina_intelligence):
                             comando += i
                         elif i == "p":
                             comando += i
-                        elif re.search('L\d+pC\d+', comando):
-                            producto.elaboracion.insertar_comando(comando)
+                        elif i == " ":
+                            bandera = False
+                            for coman in comando:
+                                if re.search('\d', coman):
+                                    linea += coman
+                                elif coman == "p":
+                                    break
+                            
+                            for coman in comando:
+                                if coman == "C":
+                                    bandera = True
+                                if bandera:
+                                    if re.search('\d', coman):
+                                        posicion += coman
+
+                            producto.elaboracion.insertar_comando(comando, int(linea), int(posicion))
                             comando = ""
+                            linea = ""
+                            posicion = ""
+
+                            
+                        
+                                    
                            
 def cargar_archivo_simular(ruta, lista_simulaciones):
     tree = ET.parse(ruta)
@@ -147,13 +192,16 @@ def menu():
             #cargar_archivo(file, lineas_ensamblaje, lista_productos)
             cargar_archivo_2(file, maquina_intelligence)
         if opcion == "2":
-            filename = input("Ingrese el nombre del archivo a simular")
+            filename = input("Ingrese el nombre del archivo a simular: ")
             file = './' + filename
 
             cargar_archivo_simular(file, maquina_intelligence.lista_simulaciones)
 
         if opcion == '3':
-            maquina_intelligence.procesar_archivo('\n            iWatch\n            ')
+            maquina_intelligence.procesar_archivo('\niWatch\n')
+
+        if opcion == '4':
+            pass
                                                   
 if __name__ == '__main__':
     menu()
