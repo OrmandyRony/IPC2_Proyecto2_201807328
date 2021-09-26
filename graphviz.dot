@@ -1,0 +1,38 @@
+
+    digraph L{
+    node[shape = box fillcolor = "yellow" style = filled]
+    
+
+    subgraph cluster_p{
+        label = "
+Banda Galaxy Fit 2
+"
+        
+        /*Aqui creamos las cabeceras de las filas */
+        Columna1[label = "L4pC23", group = 2, fillcolor = yellow];
+Columna2[label = "L12pC16", group = 3, fillcolor = yellow];
+Columna3[label = "L2pC9", group = 4, fillcolor = yellow];
+Columna4[label = "L9pC15", group = 5, fillcolor = yellow];
+Columna5[label = "L3pC19", group = 6, fillcolor = yellow];
+Columna6[label = "L7pC9", group = 7, fillcolor = yellow];
+Columna7[label = "L5pC1", group = 8, fillcolor = yellow];
+Columna8[label = "L11pC22", group = 9, fillcolor = yellow];
+Columna9[label = "L7pC7", group = 10, fillcolor = yellow];
+Columna10[label = "L5pC10", group = 11, fillcolor = yellow];
+Columna11[label = "L13pC12", group = 12, fillcolor = yellow];
+Columna12[label = "L10pC14", group = 13, fillcolor = yellow];
+Columna13[label = "L13pC7", group = 14, fillcolor = yellow];
+Columna1->Columna2;
+Columna2->Columna3;
+Columna3->Columna4;
+Columna4->Columna5;
+Columna5->Columna6;
+Columna6->Columna7;
+Columna7->Columna8;
+Columna8->Columna9;
+Columna9->Columna10;
+Columna10->Columna11;
+Columna11->Columna12;
+Columna12->Columna13;
+}
+    }

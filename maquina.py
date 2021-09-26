@@ -2,6 +2,7 @@ from lineas_ensamblaje import Lineas_ensamblaje
 from lista_productos import Lista_productos
 from lista_simulaciones import Lista_simulaciones
 from lista_brazos import Lista_brazos
+from lista_procesado_simulaciones import Lista_salida_simulacion
 import re
 
 
@@ -12,6 +13,7 @@ class Maquina():
         self.lista_productos = Lista_productos()
         self.lista_simulaciones = Lista_simulaciones()
         self.lista_brazos = Lista_brazos()
+        self.lista_salida_simulacion = Lista_salida_simulacion()
 
     def procesar_archivo(self, nombre_producto):
         # 1. Se le da un producto a ensamblar

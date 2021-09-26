@@ -1,0 +1,22 @@
+<SalidaSimulacion>
+    <Nombre> 
+        <!--[Texto]--> *Nombre de la simulación que generó esta salida. 
+    </Nombre> 
+    <ListadoProductos> 
+        <Producto> 
+            <Nombre> 
+                <!--[Texto]--> 
+            </Nombre> 
+            <TiempoTotal>
+                <!--[NumeroEntero>0]-->
+            </TiempoTotal> 
+            <ElaboracionOptima> 
+                <Tiempo NoSegundo="[NumeroEntero]"> 
+                    <LineaEnsamblaje NoLinea="[NumeroEntero]"> 
+                        <!--[Texto]--> *Representa la acción en la línea (movimiento, no hacer nada ó ensamblar) 
+                    </LineaEnsamblaje> 
+                </Tiempo> 
+            </ElaboracionOptima> 
+        </Producto> 
+    </ListadoProductos>
+</SalidaSimulacion>
