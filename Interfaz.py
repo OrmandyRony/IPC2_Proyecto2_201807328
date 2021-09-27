@@ -17,7 +17,7 @@ lista_lineas_ensamblaje = []
 root = Tk()
 root.iconbitmap("brazo_robot.ico")
 root.title("Digital Intelligence")
-root.geometry("800x500")
+root.geometry("550x710")
 
 producto_spin = StringVar()
 grafo_spin = StringVar()
@@ -53,19 +53,23 @@ def abre_fichero_simulacion():
     cargar_archivo_simulacion(ruta_archivo_simulacion)
 
 def limpiar_text():    
-    r = Text(root, width=95, height=15)
+    r = Text(root, width=65, height=25)
     #scrollbar = Scrollbar(root, command=r.yview)
     #scrollbar.pack(side=RIGHT, fill=Y)
     r.place(x=20, y= 100)
     r.insert(INSERT, "t(s)\tLinea\tMovimientos\n")
+    imprimir.config(text="0")
 
 def actualizar():
     spin_producto = Spinbox(root, values=(lista_productos), textvariable=producto_spin).place(x=5, y=5)
     spin_grafo = Spinbox(root, values=lista_productos, textvariable=grafo_spin).place(x=250, y=5)
 
+def tiempo_total(tiempo):
+    imprimir.config(text=tiempo)
+
 def actualizar_tablero():
-    r = Text(root, width=95, height=15)
-    r.insert(INSERT, "t(s)\tLinea\tComponente\n")
+    r = Text(root, width=65, height=25)
+    r.insert(INSERT, "t(s)\tLinea\t\tMovimientos\n")
     for elemento in lista_lineas_ensamblaje:
         r.insert(INSERT,elemento)
         r.place(x=20, y=100)
@@ -136,7 +140,7 @@ def procesar_archivo(nombre_producto):
                 comando = comando.siguiente
                 componente = componente.siguiente
                 linea_ensamblanje.mover_posicion(componente.posicion)
-                texto = str(tiempo) + "s\tLínea " + str(numero_linea) + "\tComponente "+ str(componente.posicion) +"\n"
+                texto = str(tiempo) + "s\tLínea " + str(numero_linea) + "\t\tComponente "+ str(componente.posicion) +"\n"
                 salida_producto.lista_elaboracion_optima.insertar(tiempo, numero_linea, "Movimiento")
                 lista_lineas_ensamblaje.append(texto)
                 #print("Tiempo\tLínea", numero_linea)
@@ -147,7 +151,7 @@ def procesar_archivo(nombre_producto):
                 comando = comando.siguiente
                 componente = componente.anterior
                 linea_ensamblanje.mover_posicion(componente.posicion)
-                texto = str(tiempo) + "s\tLínea " + str(numero_linea) + "\tComponente "+ str(componente.posicion) +"\n"
+                texto = str(tiempo) + "s\tLínea " + str(numero_linea) + "\t\tComponente "+ str(componente.posicion) +"\n"
                 salida_producto.lista_elaboracion_optima.insertar(tiempo, numero_linea, "Movimiento")
                 lista_lineas_ensamblaje.append(texto)
                 #print("Tiempo\tLínea", numero_linea)
@@ -168,7 +172,7 @@ def procesar_archivo(nombre_producto):
                 else:
                     brazo_temporal = maquina_intelligence.lista_brazos.principio
                 brazo = maquina_intelligence.lista_brazos.principio
-                texto = str(tiempo) + "s\tLínea " + str(numero_linea) + "\tEnsamblar Componente "+ str(componente.posicion) +"\n"
+                texto = str(tiempo) + "s\tLínea " + str(numero_linea) + "\t\tEnsamblar Componente "+ str(componente.posicion) +"\n"
                 salida_producto.lista_elaboracion_optima.insertar(tiempo, numero_linea,"Ensamblar")
                 lista_lineas_ensamblaje.append(texto)
                 #print("Tiempo\tLínea", numero_linea)
@@ -178,7 +182,7 @@ def procesar_archivo(nombre_producto):
                 comando = elaboracion.inicio
                 bandera = False
             else:
-                texto = str(tiempo) + "s\tLínea " + str(numero_linea) + "\tNo hacer nada\n"
+                texto = str(tiempo) + "s\tLínea " + str(numero_linea) + "\t\tNo hacer nada\n"
                 lista_lineas_ensamblaje.append(texto)
                 salida_producto.lista_elaboracion_optima.insertar(tiempo, numero_linea, "No hacer nada")
 
@@ -196,13 +200,11 @@ def procesar_archivo(nombre_producto):
                             tiempo += tiempo_dezplazo 
                         numero_linea = brazo.numero_linea
             actualizar_tablero()  
-                
-               
-           
             listo = maquina_intelligence.lista_brazos.producto_armado()
         
         
         salida_producto.tiempo_total = tiempo
+        tiempo_total(tiempo)
         reporte_html = generar_reporte(salida_producto)
         escribir_archivo("reporte_simulacion", reporte_html)
         
@@ -491,9 +493,13 @@ boton_producto = Button(root, text="Procesar Producto", command=procesar_product
 spin_grafo = Spinbox(root, values=lista_productos, textvariable=grafo_spin).place(x=250, y=5)
 boton_grafo = Button(root, text="Graficar cola", command=generar_grafica,  bg="#009",fg="white").place(x=260, y=30)
 
-boton_grafo = Button(root, text="Limpiar", command=limpiar_text,  bg="#009",fg="white").place(x=460, y=50)
+boton_limpiar = Button(root, text="Limpiar", command=limpiar_text,  bg="#F00",fg="white").place(x=460, y=30)
 
-r = Text(root, width=95, height=15)
+etiqueta_tiempo = Label(root, text="Tiempo Total:", bg="#FF0").place(x=460, y=520)
+imprimir = Label(root)
+imprimir.place(x=460, y=560)
+
+r = Text(root, width=65, height=25)
 #scrollbar = Scrollbar(root, command=r.yview)
 #scrollbar.pack(side=RIGHT, fill=Y)
 r.place(x=20, y= 100)
