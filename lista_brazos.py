@@ -1,4 +1,5 @@
 from brazo import Brazo
+import gc
 
 class Lista_brazos:
     def __init__(self) -> None:
@@ -66,3 +67,11 @@ class Lista_brazos:
             if not principio.pausa:
                 principio.pausa = True
             principio = principio.siguiente
+
+    def vaciar(self):
+        self.principio = None
+        self.final = None
+        self.tamano = 0
+        gc.collect()
+        
+        

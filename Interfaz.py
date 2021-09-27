@@ -12,6 +12,7 @@ from maquina import Maquina
 maquina_intelligence = Maquina()
 lista_simulaciones = maquina_intelligence.lista_simulaciones
 lista_productos = []
+lista_productos_grafica = []
 lista_lineas_ensamblaje = []
 
 root = Tk()
@@ -59,10 +60,14 @@ def limpiar_text():
     r.place(x=20, y= 100)
     r.insert(INSERT, "t(s)\tLinea\tMovimientos\n")
     imprimir.config(text="0")
+    lista_lineas_ensamblaje.clear()
 
 def actualizar():
     spin_producto = Spinbox(root, values=(lista_productos), textvariable=producto_spin).place(x=5, y=5)
-    spin_grafo = Spinbox(root, values=lista_productos, textvariable=grafo_spin).place(x=250, y=5)
+    
+
+def actualizar_lista_grafo():
+    spin_grafo = Spinbox(root, values=lista_productos_grafica, textvariable=grafo_spin).place(x=250, y=5)
 
 def tiempo_total(tiempo):
     imprimir.config(text=tiempo)
@@ -203,12 +208,14 @@ def procesar_archivo(nombre_producto):
             listo = maquina_intelligence.lista_brazos.producto_armado()
         
         
-        salida_producto.tiempo_total = tiempo
-        tiempo_total(tiempo)
+        salida_producto.tiempo_total = tiempo - 1
+        tiempo_total(tiempo -1)
         reporte_html = generar_reporte(salida_producto)
-        escribir_archivo("reporte_simulacion", reporte_html)
+        escribir_archivo("reporte_simulacion"+salida_producto.nombre, reporte_html)
         
         escribir_archivo_salida(salida_producto)
+        maquina_intelligence.lista_brazos.vaciar()
+        
         #print("Producto armado")
 
 def escribir_archivo(ruta, contenido):
@@ -249,7 +256,7 @@ def escribir_archivo_salida(salida_producto):
 
 
     archivo1 = ET.ElementTree(simulacion_escribir)
-    archivo1.write("simulacion_maquina.xml")
+    archivo1.write("simulacion_maquina"+salida_producto.nombre+".xml")
 
 
 def tabla_datos_html(salida_producto):
@@ -314,7 +321,7 @@ def cargar_archivo_maquina(ruta):
     
     for maquina in root:
         for linea_produccion in maquina.iter('CantidadLineasProduccion'):
-            print(linea_produccion.text)
+            linea_produccioneas = (linea_produccion.text)
         
         for listado_lineas_produccion in maquina.iter('ListadoLineasProduccion'):
             for linea_produccion in listado_lineas_produccion.iter('LineaProduccion'):
@@ -338,11 +345,17 @@ def cargar_archivo_maquina(ruta):
         
         for listado_productos in maquina.iter('ListadoProductos'):
             for productos in listado_productos.iter('Producto'):
-                nombre_producto = " "
+                nombre_producto = ""
                 for nombre in productos.iter('nombre'):
-                    nombre_producto = str(nombre.text)
-        
+
+                    nombre_temporal = str(nombre.text)
+                    for i in nombre_temporal:
+                        if re.search('\w', i):
+                            nombre_producto += i
+
+                    lista_productos_grafica.append(nombre_producto)
                     maquina_intelligence.lista_productos.ingresar_producto(nombre_producto)
+
                 for elaboracio in productos.iter('elaboracion'):
                     producto = maquina_intelligence.lista_productos.get_producto(nombre_producto)
                     comandos = elaboracio.text
@@ -380,27 +393,41 @@ def cargar_archivo_maquina(ruta):
                             comando = ""
                             linea = ""
                             posicion = ""
-                      
+
+    actualizar_lista_grafo()
+
 def cargar_archivo_simulacion(ruta):
     tree = ET.parse(ruta)
     root = tree.getroot()
     nombre_simulacion = ""
+    nombre_producto = ""
     for simulacion in root:
         
         for nombre in simulacion.iter('Nombre'):
-            nombre_simulacion = nombre.text
+            nombre_simulacion = str(nombre.text)
             lista_simulaciones.crear_simulacion(nombre_simulacion)
         
         for Listado_productos in simulacion.iter('ListadoProductos'):
             simulaciono = lista_simulaciones.get_simulacion(nombre_simulacion)
             for producto in Listado_productos.iter('Producto'):
-                simulaciono.listado_productos.ingresar_producto(producto.text)                
-                lista_productos.append(producto.text)
+                nombre_producto = ""
+                nombre_temporal = str(producto.text)
+                for i in nombre_temporal:
+                    if re.search('\w', i):
+                        nombre_producto  += i
+                simulaciono.listado_productos.ingresar_producto(nombre_producto)                
+                lista_productos.append(nombre_producto)
     
     actualizar()
 
 def procesar_producto():
     procesar_archivo(producto_spin.get())
+
+def procesar_todos_producto():
+    for producto in lista_productos:
+        lista_lineas_ensamblaje.append(producto)
+        procesar_archivo(producto)
+        
 
 def generar_grafica():
     generar_img_grafo(grafo_spin.get())
@@ -445,9 +472,10 @@ def generar_img_grafo(nombre_producto):
     miArchivo = open('graphviz.dot', 'w')
     miArchivo.write(graphviz)
     miArchivo.close()
-    system('dot -Tpng graphviz.dot -o graphviz.png')
-    system('cd ./graphviz.png')
-    startfile('graphviz.png')
+    system('dot -Tpng graphviz.dot -o graphviz'+producto.nombre+'.png')
+    system('cd ./graphviz'+producto.nombre+'.png')
+    startfile('graphviz'+producto.nombre+'.png')
+    
 #------------------------------------------------------------------------------ 
 
 
@@ -490,7 +518,9 @@ barra_menu.add_cascade(label="Ayuda", menu=archivo_ayudas)
 spin_producto = Spinbox(root, values=lista_productos, textvariable=producto_spin).place(x=5, y=5)
 boton_producto = Button(root, text="Procesar Producto", command=procesar_producto,  bg="#009",fg="white").place(x=25, y=30)
 
-spin_grafo = Spinbox(root, values=lista_productos, textvariable=grafo_spin).place(x=250, y=5)
+boton_productos = Button(root, text="Procesar todos", command=procesar_todos_producto,  bg="#0F0",fg="white").place(x=150, y=5)
+
+spin_grafo = Spinbox(root, values=lista_productos_grafica, textvariable=grafo_spin).place(x=250, y=5)
 boton_grafo = Button(root, text="Graficar cola", command=generar_grafica,  bg="#009",fg="white").place(x=260, y=30)
 
 boton_limpiar = Button(root, text="Limpiar", command=limpiar_text,  bg="#F00",fg="white").place(x=460, y=30)

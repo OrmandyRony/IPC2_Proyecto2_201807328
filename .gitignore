@@ -1,0 +1,5 @@
+# Ignora todos los archivos de XML
+*.xml
+
+# Ignora todos los archivos de XML
+*.html
